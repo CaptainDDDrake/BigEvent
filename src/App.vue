@@ -24,6 +24,7 @@ const useCount = useCountStore()
 <template>
   <div>
     <hr />
+    <hr />
     <router-view></router-view>
     <hr />
     <hr />
