@@ -23,6 +23,11 @@ const useCount = useCountStore()
 
 <template>
   <div>
+    <hr />
+    <router-view></router-view>
+    <hr />
+    <hr />
+    <hr />
     <h1>test1</h1>
     <el-button @click="$router.push('/home')">跳首页</el-button>
     <el-button @click="goList">跳列表首页</el-button>
