@@ -1,85 +1,41 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+/**
+ * 在 Vue3 CompositionAPI 中
+ * 1. 获取路由对象 router useRouter
+ *    const router = userRouter()
+ * 2. 获取路由参数 route useRoute
+ *    const route = useRoute()
+ */
+import { useRoute, useRouter } from 'vue-router'
+import { useUserStore, useCountStore } from '@/stores'
+
+const router = useRouter()
+const route = useRoute()
+
+const goList = () => {
+  console.log(router, route)
+  router.push('/list')
+}
+
+const userStore = useUserStore()
+const useCount = useCountStore()
 </script>
 
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
+  <div>
+    <h1>test1</h1>
+    <el-button @click="$router.push('/home')">跳首页</el-button>
+    <el-button @click="goList">跳列表首页</el-button>
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <h1>test2</h1>
+    <p>{{ userStore.token }}</p>
+    <button @click="userStore.setToken('token2')">change</button>
+    <button @click="userStore.removeToken()">remove</button>
 
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-      </nav>
-    </div>
-  </header>
-
-  <RouterView />
+    <h1>test3</h1>
+    <p>{{ useCount.count }}</p>
+    <el-button @click="useCount.add(2)">+2</el-button>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
+<style scoped></style>
