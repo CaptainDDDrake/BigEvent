@@ -1,8 +1,9 @@
 <script setup>
 import { ref } from 'vue'
-import { artGetChannelsService } from '../../api/article'
+import { artGetChannelsService, artDelChannelService } from '../../api/article'
 import { Edit, Delete } from '@element-plus/icons-vue'
 import ChannelEdit from './components/ChannelEdit.vue'
+import { ElMessage } from 'element-plus'
 const channelList = ref([])
 
 const loading = ref(false)
@@ -17,13 +18,20 @@ const getChannelList = async () => {
 }
 getChannelList()
 
-const onEditChannel = (row, $index) => {
+const onEditChannel = (row) => {
   dialog.value.open(row)
-  console.log(row, $index)
+  // console.log(row, $index)
 }
 
-const onDelChannel = (row) => {
-  console.log(row)
+const onDelChannel = async (row) => {
+  await ElMessageBox.confirm('你确认要删除此文章?', '温馨提示', {
+    type: 'warning',
+    confirmButtonText: '确认',
+    cancelButtonText: '取消'
+  })
+  artDelChannelService(row.id)
+  ElMessage.success('删除成功')
+  getChannelList()
 }
 
 const onAddChannel = () => {
