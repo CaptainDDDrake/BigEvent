@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { Delete, Edit } from '@element-plus/icons-vue'
-import ChannelSelect from './components/ChannelSelect.vue'
+import ChannelSelect from '@/views/article/components/ChannelSelect.vue'
+import ArticleEdit from './components/ArticleEdit.vue'
 import { artGetListService } from '@/api/article.js'
 import { formatTime } from '@/utils/format.js'
 const articleList = ref([]) // 文章列表
@@ -51,21 +52,42 @@ const onReset = () => {
   getArticleList()
 }
 
+const articleEditRef = ref()
+// 添加逻辑
+const onAddArticle = () => {
+  // console.log('Add')
+
+  articleEditRef.value.open({})
+}
+
 // 编辑逻辑
 const onEditArticle = (row) => {
-  console.log(row)
+  // console.log('Edit')
+
+  articleEditRef.value.open(row)
 }
 
 // 删除逻辑
 const onDeleteArticle = (row) => {
   console.log(row)
 }
+
+// 添加或者编辑 成功的回调
+const onSuccess = (type) => {
+  if (type === 'add') {
+    // 如果是添加，最好渲染最后一夜
+    const lastPage = Math.ceil((total.value + 1) / params.value.pagesize)
+    // 更新成最大页码数，再渲染
+    params.value.pagenum = lastPage
+  }
+  getArticleList()
+}
 </script>
 
 <template>
   <page-container title="文章管理">
     <template #extra>
-      <el-button>添加文章</el-button>
+      <el-button type="primary" @click="onAddArticle">添加文章</el-button>
     </template>
 
     <!-- 表单区域 -->
@@ -141,6 +163,9 @@ const onDeleteArticle = (row) => {
       @current-change="onCurrentChange"
       style="margin-top: 20px; justify-content: flex-end"
     />
+
+    <!-- 抽屉 -->
+    <article-edit ref="articleEditRef" @success="onSuccess"></article-edit>
   </page-container>
 </template>
 
